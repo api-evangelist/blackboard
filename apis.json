@@ -1,0 +1,72 @@
+{
+    "name": "Blackboard",
+    "description": "Blackboard focuses on technology and services to help students learn, not just one way, but their own way. Learn more.",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/993-blackboard.jpg",
+    "tags": [
+        "api provider",
+        "have api"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/blackboard\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "Blackboard",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/993-blackboard.jpg",
+            "humanURL": "http:\/\/www.blackboard.com\/",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/blackboard-openapi.json"
+                },
+                {
+                    "type": "x-postman-collecction",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/blackboard-postman-collection.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "Blog",
+            "url": "http:\/\/blog.blackboard.com\/"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "https:\/\/crunchbase.com\/organization\/blackboard"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "http:\/\/www.crunchbase.com\/company\/blackboard"
+        },
+        {
+            "type": "Developers",
+            "url": "https:\/\/developer.blackboard.com\/"
+        },
+        {
+            "type": "Email",
+            "url": "privacy@blackboard.com"
+        },
+        {
+            "type": "Email",
+            "url": "learnsecurity@blackboard.com"
+        },
+        {
+            "type": "Email",
+            "url": "GeneralCounsel@blackboard.com"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/blackboard"
+        },
+        {
+            "type": "Website",
+            "url": "http:\/\/www.blackboard.com\/"
+        }
+    ]
+}
