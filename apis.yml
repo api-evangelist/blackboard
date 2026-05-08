@@ -1,0 +1,29 @@
+aid: blackboard
+url: https://raw.githubusercontent.com/api-evangelist/blackboard/refs/heads/main/apis.yml
+name: Blackboard
+x-type: company
+description: >-
+  Blackboard (now part of Anthology) is a leading higher-education LMS with REST and SOAP APIs covering courses, users, gradebook, content, assignments, and announcements.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - EdTech
+  - LMS
+  - Higher Ed
+  - K-12
+  - Anthology
+created: '2026-05-08'
+modified: '2026-05-08'
+specificationVersion: '0.19'
+apis: []
+common:
+  - type: Website
+    url: https://www.anthology.com/blackboard
+  - type: Plans
+    url: plans/blackboard-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/blackboard-rate-limits.yml
+  - type: FinOps
+    url: finops/blackboard-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
