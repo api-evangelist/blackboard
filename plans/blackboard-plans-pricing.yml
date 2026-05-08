@@ -9,33 +9,34 @@ reconciled: false
 tags:
 - EdTech
 - LMS
-- Higher Ed
-- K-12
-- Anthology
+- Learning Management
 - Plans
-description: Placeholder plans/pricing artifact for Blackboard. Replace with real published pricing once
-  the pipeline researches the provider's plans page.
-notes: Initial scaffold — plans/pricing have not yet been reconciled.
+description: Anthology/Blackboard products are sold via enterprise sales to higher education and K-12
+  institutions. Pricing is not publicly posted.
+notes: API access is included with paid Anthology subscriptions.
 sources:
-- https://www.anthology.com/blackboard
+- https://www.anthology.com/
+- https://developer.blackboard.com/
 plans:
-- id: blackboard-default
-  name: To Be Reconciled
+- id: anthology-enterprise
+  name: Anthology Enterprise
   type: enterprise
-  description: Initial scaffold; replace with provider plan tiers once pricing is reconciled.
+  description: Enterprise subscription for Blackboard Learn, Ally, and/or Student modules.
   entries:
-  - label: API Access
-    name: api_access
+  - label: Subscription
+    name: subscription
     type: flat
-    metric: varies
+    metric: annual subscription
     limit: -1
-    timeFrame: usage
+    timeFrame: yearly
     geo: global
     unit: 1
-    price: see https://www.anthology.com/blackboard
+    price: contact sales
     userMultiplied: false
   elements:
-  - name: Pending Reconciliation
+  - name: Blackboard Learn
+  - name: Anthology Ally
+  - name: Anthology Student
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

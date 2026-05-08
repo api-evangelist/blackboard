@@ -9,24 +9,24 @@ reconciled: false
 tags:
 - EdTech
 - LMS
-- Higher Ed
-- K-12
-- Anthology
+- Learning Management
 - Rate Limiting
 - Quotas
 - Throttling
-description: Placeholder rate-limit artifact for Blackboard. Replace with real limits once researched.
-notes: Initial scaffold — limits have not yet been reconciled.
+description: Blackboard Learn REST API has documented per-app rate windows (commonly 50,000 calls/day
+  per integration in cloud deployments) but specific values vary by deployment and tier. Self-hosted instances
+  are operator-configured.
+notes: Confirm exact thresholds in your deployment's Anthology Developer documentation.
 sources:
-- https://www.anthology.com/blackboard
+- https://developer.blackboard.com/portal/displayApi
 responseCodes:
   throttled: 429
 limits:
-- name: Default
-  scope: account
-  metric: varies
-  limit: see provider documentation
-  notes: Pending reconciliation.
+- name: Default Learn REST
+  scope: application
+  metric: requests
+  limit: deployment-specific (commonly daily quotas)
+  notes: Honor 429 responses; cache aggressively.
 policies:
 - name: Backoff Strategy
   description: Clients should implement exponential backoff with jitter and honor any Retry-After header.
