@@ -1,7 +1,7 @@
 aid: blackboard
 url: https://raw.githubusercontent.com/api-evangelist/blackboard/refs/heads/main/apis.yml
 name: Blackboard
-x-type: company
+kind: company
 description: Blackboard (now part of Anthology) provides Blackboard Learn LMS plus the Anthology product
   suite (Ally, Student). The Anthology Developer portal exposes REST APIs for Learn, Ally, and Student,
   with versions across the 3200, 3900, and 4000 series and ongoing backward compatibility.
