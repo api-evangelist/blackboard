@@ -7,68 +7,72 @@ description: Blackboard (now part of Anthology) provides Blackboard Learn LMS pl
   with versions across the 3200, 3900, and 4000 series and ongoing backward compatibility.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-- EdTech
-- LMS
-- Learning Management
+  - EdTech
+  - LMS
+  - Learning Management
 created: '2026-05-08'
 modified: '2026-05-08'
 specificationVersion: '0.19'
 apis:
-- aid: blackboard:learn-rest
-  name: Blackboard Learn REST API
-  description: REST API for Blackboard Learn, the flagship LMS. Covers users, courses, content, grades,
-    assignments, announcements, terms, system roles, and SIS data integration. SOAP APIs are also available
-    for legacy integrations.
-  humanURL: https://developer.blackboard.com/portal/displayApi
-  tags:
-  - REST
-  - LMS
-  - Learn
-  properties:
-  - type: Documentation
-    url: https://developer.blackboard.com/portal/displayApi
-- aid: blackboard:ally-rest
-  name: Anthology Ally REST API
-  description: REST API for Anthology Ally, the accessibility and learning effectiveness service.
-  humanURL: https://developer.blackboard.com/
-  tags:
-  - Accessibility
-  - Ally
-  properties:
-  - type: Documentation
-    url: https://developer.blackboard.com/
-- aid: blackboard:student-rest
-  name: Anthology Student REST API
-  description: REST API for Anthology Student, the SIS for higher education.
-  humanURL: https://developer.blackboard.com/
-  tags:
-  - SIS
-  - Student
-  properties:
-  - type: Documentation
-    url: https://developer.blackboard.com/
-- aid: blackboard:learn-soap
-  name: Blackboard Learn SOAP API (Legacy)
-  description: Legacy SOAP web services for Blackboard Learn integrations.
-  humanURL: https://developer.blackboard.com/
-  tags:
-  - SOAP
-  - Legacy
-  - Learn
-  properties:
-  - type: Documentation
-    url: https://developer.blackboard.com/
+  - aid: blackboard:learn-rest
+    name: Blackboard Learn REST API
+    description: REST API for Blackboard Learn, the flagship LMS. Covers users, courses, content, grades,
+      assignments, announcements, terms, system roles, and SIS data integration. SOAP APIs are also available
+      for legacy integrations.
+    humanURL: https://developer.blackboard.com/portal/displayApi
+    tags:
+    - REST
+    - LMS
+    - Learn
+    properties:
+    - type: Documentation
+      url: https://developer.blackboard.com/portal/displayApi
+  - aid: blackboard:ally-rest
+    name: Anthology Ally REST API
+    description: REST API for Anthology Ally, the accessibility and learning effectiveness service.
+    humanURL: https://developer.blackboard.com/
+    tags:
+    - Accessibility
+    - Ally
+    properties:
+    - type: Documentation
+      url: https://developer.blackboard.com/
+  - aid: blackboard:student-rest
+    name: Anthology Student REST API
+    description: REST API for Anthology Student, the SIS for higher education.
+    humanURL: https://developer.blackboard.com/
+    tags:
+    - SIS
+    - Student
+    properties:
+    - type: Documentation
+      url: https://developer.blackboard.com/
+  - aid: blackboard:learn-soap
+    name: Blackboard Learn SOAP API (Legacy)
+    description: Legacy SOAP web services for Blackboard Learn integrations.
+    humanURL: https://developer.blackboard.com/
+    tags:
+    - SOAP
+    - Legacy
+    - Learn
+    properties:
+    - type: Documentation
+      url: https://developer.blackboard.com/
 common:
-- type: Website
-  url: https://www.anthology.com/
-- type: Developer
-  url: https://developer.blackboard.com/
-- type: Plans
-  url: plans/blackboard-plans-pricing.yml
-- type: RateLimits
-  url: rate-limits/blackboard-rate-limits.yml
-- type: FinOps
-  url: finops/blackboard-finops.yml
+  - type: GitHubOrganization
+    url: https://github.com/blackboard
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/blackboardlearn
+  - type: Website
+    url: https://www.anthology.com/
+  - type: Developer
+    url: https://developer.blackboard.com/
+  - type: Plans
+    url: plans/blackboard-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/blackboard-rate-limits.yml
+  - type: FinOps
+    url: finops/blackboard-finops.yml
 maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+  - FN: Kin Lane
+    email: kin@apievangelist.com
