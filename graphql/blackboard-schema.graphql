@@ -1,0 +1,1593 @@
+"""
+Blackboard (Anthology) Learn LMS - Conceptual GraphQL Schema
+Derived from the Blackboard Learn REST API: https://developer.blackboard.com/portal/displayApi
+This schema provides a unified graph interface over Blackboard Learn resources.
+"""
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+# ─── Root Query ───────────────────────────────────────────────────────────────
+
+type Query {
+  course(id: ID!): Course
+  courses(filter: CourseFilter, offset: Int, limit: Int): CourseConnection
+  courseTemplate(id: ID!): CourseTemplate
+  courseTemplates: [CourseTemplate]
+  courseCatalog: [CourseCatalog]
+  term(id: ID!): Term
+  terms: [Term]
+
+  user(id: ID!): User
+  users(filter: UserFilter, offset: Int, limit: Int): UserConnection
+
+  enrollment(courseId: ID!, userId: ID!): EnrollmentDetails
+  enrollments(courseId: ID!, offset: Int, limit: Int): [EnrollmentDetails]
+
+  gradeColumn(courseId: ID!, columnId: ID!): GradeColumn
+  gradeColumns(courseId: ID!): [GradeColumn]
+  gradebookEntry(courseId: ID!, columnId: ID!, userId: ID!): GradebookEntry
+  gradebookEntries(courseId: ID!, columnId: ID!): [GradebookEntry]
+  gradingPeriod(courseId: ID!, periodId: ID!): GradingPeriod
+  gradingPeriods(courseId: ID!): [GradingPeriod]
+  rubric(courseId: ID!, rubricId: ID!): Rubric
+  rubrics(courseId: ID!): [Rubric]
+
+  contentItem(courseId: ID!, contentId: ID!): ContentItem
+  contentItems(courseId: ID!, folderId: ID): [ContentItem]
+  contentFolder(courseId: ID!, folderId: ID!): ContentFolder
+  contentFolders(courseId: ID!): [ContentFolder]
+  attachment(courseId: ID!, contentId: ID!, attachmentId: ID!): Attachment
+  assignment(courseId: ID!, assignmentId: ID!): Assignment
+
+  announcement(courseId: ID!, announcementId: ID!): Announcement
+  announcements(courseId: ID!, offset: Int, limit: Int): [Announcement]
+
+  forum(courseId: ID!, forumId: ID!): Forum
+  forums(courseId: ID!): [Forum]
+  thread(courseId: ID!, forumId: ID!, threadId: ID!): Thread
+  threads(courseId: ID!, forumId: ID!): [Thread]
+  post(courseId: ID!, forumId: ID!, threadId: ID!, postId: ID!): Post
+  posts(courseId: ID!, forumId: ID!, threadId: ID!): [Post]
+
+  group(courseId: ID!, groupId: ID!): Group
+  groups(courseId: ID!): [Group]
+  groupMembership(courseId: ID!, groupId: ID!, userId: ID!): GroupMembership
+  groupMemberships(courseId: ID!, groupId: ID!): [GroupMembership]
+
+  meeting(courseId: ID!, meetingId: ID!): Meeting
+  meetings(courseId: ID!): [Meeting]
+  attendanceRecord(courseId: ID!, meetingId: ID!, userId: ID!): AttendanceRecord
+  attendanceRecords(courseId: ID!, meetingId: ID!): [AttendanceRecord]
+
+  calendarEvent(id: ID!): CalendarEvent
+  calendarEvents(filter: CalendarFilter): [CalendarEvent]
+
+  ltiPlacement(courseId: ID!, placementId: ID!): LTIPlacement
+  ltiPlacements(courseId: ID!): [LTIPlacement]
+  lti(id: ID!): LTI
+  ltis: [LTI]
+
+  webhook(id: ID!): Webhook
+  webhooks: [Webhook]
+  webhookEvents(webhookId: ID!): [WebhookEvent]
+
+  apiKey(id: ID!): APIKey
+  apiKeys: [APIKey]
+  token(id: ID!): Token
+
+  institution: Institution
+  systemRole(id: ID!): SystemRole
+  systemRoles: [SystemRole]
+  dataSource(id: ID!): DataSource
+  dataSources: [DataSource]
+}
+
+# ─── Root Mutation ────────────────────────────────────────────────────────────
+
+type Mutation {
+  createCourse(input: CourseInput!): Course
+  updateCourse(id: ID!, input: CourseInput!): Course
+  deleteCourse(id: ID!): Boolean
+
+  createEnrollment(input: EnrollmentInput!): EnrollmentDetails
+  updateEnrollment(courseId: ID!, userId: ID!, input: EnrollmentInput!): EnrollmentDetails
+  deleteEnrollment(courseId: ID!, userId: ID!): Boolean
+
+  createGradeColumn(courseId: ID!, input: GradeColumnInput!): GradeColumn
+  updateGradeColumn(courseId: ID!, columnId: ID!, input: GradeColumnInput!): GradeColumn
+  deleteGradeColumn(courseId: ID!, columnId: ID!): Boolean
+  updateGrade(courseId: ID!, columnId: ID!, userId: ID!, input: GradeInput!): GradebookEntry
+  submitGradeAttempt(courseId: ID!, columnId: ID!, input: AttemptInput!): GradeColumnAttempt
+
+  createContentItem(courseId: ID!, input: ContentItemInput!): ContentItem
+  updateContentItem(courseId: ID!, contentId: ID!, input: ContentItemInput!): ContentItem
+  deleteContentItem(courseId: ID!, contentId: ID!): Boolean
+  createContentFolder(courseId: ID!, input: ContentFolderInput!): ContentFolder
+
+  createAnnouncement(courseId: ID!, input: AnnouncementInput!): Announcement
+  updateAnnouncement(courseId: ID!, announcementId: ID!, input: AnnouncementInput!): Announcement
+  deleteAnnouncement(courseId: ID!, announcementId: ID!): Boolean
+
+  createForum(courseId: ID!, input: ForumInput!): Forum
+  createThread(courseId: ID!, forumId: ID!, input: ThreadInput!): Thread
+  createPost(courseId: ID!, forumId: ID!, threadId: ID!, input: PostInput!): Post
+  deletePost(courseId: ID!, forumId: ID!, threadId: ID!, postId: ID!): Boolean
+
+  createGroup(courseId: ID!, input: GroupInput!): Group
+  updateGroup(courseId: ID!, groupId: ID!, input: GroupInput!): Group
+  deleteGroup(courseId: ID!, groupId: ID!): Boolean
+  addGroupMembership(courseId: ID!, groupId: ID!, userId: ID!): GroupMembership
+  removeGroupMembership(courseId: ID!, groupId: ID!, userId: ID!): Boolean
+
+  createMeeting(courseId: ID!, input: MeetingInput!): Meeting
+  recordAttendance(courseId: ID!, meetingId: ID!, input: AttendanceInput!): AttendanceRecord
+
+  createCalendarEvent(input: CalendarEventInput!): CalendarEvent
+  updateCalendarEvent(id: ID!, input: CalendarEventInput!): CalendarEvent
+  deleteCalendarEvent(id: ID!): Boolean
+
+  createLTIPlacement(courseId: ID!, input: LTIPlacementInput!): LTIPlacement
+  deleteLTIPlacement(courseId: ID!, placementId: ID!): Boolean
+
+  createWebhook(input: WebhookInput!): Webhook
+  updateWebhook(id: ID!, input: WebhookInput!): Webhook
+  deleteWebhook(id: ID!): Boolean
+
+  createUser(input: UserInput!): User
+  updateUser(id: ID!, input: UserInput!): User
+  deleteUser(id: ID!): Boolean
+
+  createAPIKey(input: APIKeyInput!): APIKey
+  revokeAPIKey(id: ID!): Boolean
+  refreshToken(refreshToken: String!): Token
+}
+
+# ─── Course Types ─────────────────────────────────────────────────────────────
+
+"""A course in Blackboard Learn."""
+type Course {
+  id: ID!
+  externalId: String
+  dataSourceId: String
+  courseId: String
+  name: String!
+  description: String
+  created: String
+  modified: String
+  organization: Boolean
+  ultraStatus: String
+  allowGuests: Boolean
+  readOnly: Boolean
+  termId: String
+  availability: CourseAvailability
+  enrollment: CourseEnrollment
+  locale: String
+  hasChildren: Boolean
+  parentId: String
+  externalAccessUrl: String
+  guestAccessUrl: String
+  details: CourseDetails
+  term: CourseTerm
+  template: CourseTemplate
+  enrollments: [EnrollmentDetails]
+  contentItems: [ContentItem]
+  announcements: [Announcement]
+  gradeColumns: [GradeColumn]
+  groups: [Group]
+  forums: [Forum]
+  meetings: [Meeting]
+  ltiPlacements: [LTIPlacement]
+}
+
+"""Extended metadata and settings for a course."""
+type CourseDetails {
+  courseId: ID!
+  duration: CourseDuration
+  enrollment: CourseEnrollmentSettings
+  locale: LocaleSettings
+  hasDescriptionPage: Boolean
+  showToc: Boolean
+  bulletinBoard: Boolean
+  allowObservers: Boolean
+  allowGuests: Boolean
+  closedComplete: Boolean
+  selfEnrollment: SelfEnrollmentSettings
+}
+
+"""Enrollment record linking a user to a course."""
+type CourseEnrollment {
+  type: String
+  start: String
+  end: String
+  accessCode: String
+  limit: Int
+}
+
+"""Enrollment settings embedded on a course."""
+type CourseEnrollmentSettings {
+  type: String
+  start: String
+  end: String
+  accessCode: String
+}
+
+"""Availability window and status for a course."""
+type CourseAvailability {
+  available: String
+  duration: CourseDuration
+}
+
+"""Duration configuration for a course."""
+type CourseDuration {
+  type: String
+  start: String
+  end: String
+  daysOfUse: Int
+}
+
+"""Catalog entry representing a course in the public catalog."""
+type CourseCatalog {
+  id: ID!
+  courseId: String
+  name: String
+  description: String
+  organization: Boolean
+  externalAccessUrl: String
+  guestAccessUrl: String
+}
+
+"""A term (semester/quarter) to which courses belong."""
+type CourseTerm {
+  id: ID!
+  externalId: String
+  dataSourceId: String
+  name: String
+  description: String
+  availability: TermAvailability
+}
+
+"""A template used to create courses from a standard structure."""
+type CourseTemplate {
+  id: ID!
+  courseId: String
+  name: String
+  description: String
+  externalId: String
+  dataSourceId: String
+  created: String
+  modified: String
+  availability: CourseAvailability
+}
+
+"""Self-enrollment settings for a course."""
+type SelfEnrollmentSettings {
+  enabled: Boolean
+  accessCode: String
+}
+
+"""Locale settings for a course."""
+type LocaleSettings {
+  id: String
+  force: Boolean
+}
+
+# ─── Grade Types ──────────────────────────────────────────────────────────────
+
+"""A single grade value for a user in a grade column."""
+type Grade {
+  userId: ID!
+  columnId: ID!
+  status: String
+  displayGrade: DisplayGrade
+  text: String
+  score: Float
+  overridden: String
+  notes: String
+  feedback: String
+  exempt: Boolean
+  corrupt: Boolean
+}
+
+"""Display representation of a grade."""
+type DisplayGrade {
+  scaleType: String
+  score: Float
+  text: String
+  letterGrade: String
+  percentScore: Float
+}
+
+"""A column in a course gradebook."""
+type GradeColumn {
+  id: ID!
+  externalId: String
+  name: String
+  description: String
+  externalGrade: Boolean
+  created: String
+  modified: String
+  contentId: String
+  score: GradeColumnScore
+  availability: GradeColumnAvailability
+  grading: GradeColumnGrading
+  gradebookCategory: GradebookCategory
+  gradeNotationId: String
+  includeInCalculations: Boolean
+  showStatisticsToStudents: Boolean
+}
+
+"""Score configuration for a grade column."""
+type GradeColumnScore {
+  possible: Float
+}
+
+"""Availability settings for a grade column."""
+type GradeColumnAvailability {
+  available: String
+}
+
+"""Grading settings for a grade column."""
+type GradeColumnGrading {
+  type: String
+  due: String
+  attemptsAllowed: Int
+  scoringModel: String
+  anonymousGrading: AnonymousGrading
+  schemaId: String
+  periodId: String
+  rubricAssociations: [RubricAssociation]
+}
+
+"""Anonymous grading configuration."""
+type AnonymousGrading {
+  type: String
+  releaseAfter: String
+}
+
+"""A student's attempt on a grade column."""
+type GradeColumnAttempt {
+  id: ID!
+  userId: ID!
+  columnId: ID!
+  status: String
+  displayGrade: DisplayGrade
+  text: String
+  score: Float
+  reconciliationMode: String
+  notes: String
+  feedback: String
+  studentComments: String
+  studentSubmission: String
+  exempt: Boolean
+  created: String
+  attemptDate: String
+  modified: String
+  groupAttemptId: String
+  groupOverride: Boolean
+  attemptReceipt: AttemptReceipt
+}
+
+"""Receipt details for a submitted attempt."""
+type AttemptReceipt {
+  receiptId: String
+  submissionDate: String
+}
+
+"""Detailed metadata for a grade attempt."""
+type GradeAttemptDetails {
+  attemptId: ID!
+  columnId: ID!
+  userId: ID!
+  status: String
+  text: String
+  score: Float
+  notes: String
+  feedback: String
+  studentComments: String
+  studentSubmission: String
+  created: String
+  modified: String
+  fileNames: [String]
+}
+
+"""An entry in the gradebook for a user and column."""
+type GradebookEntry {
+  userId: ID!
+  columnId: ID!
+  status: String
+  displayGrade: DisplayGrade
+  text: String
+  score: Float
+  overridden: String
+  notes: String
+  feedback: String
+  exempt: Boolean
+  corrupt: Boolean
+  gradeNotationId: String
+  changeIndex: Int
+}
+
+"""Definition of a gradebook column (alias used by some endpoints)."""
+type GradebookColumn {
+  id: ID!
+  name: String
+  description: String
+  externalGrade: Boolean
+  created: String
+  modified: String
+  score: GradeColumnScore
+  availability: GradeColumnAvailability
+  grading: GradeColumnGrading
+}
+
+"""Gradebook category grouping grade columns."""
+type GradebookCategory {
+  id: ID!
+  name: String
+}
+
+"""A grading rubric associated with an assignment or grade column."""
+type Rubric {
+  id: ID!
+  courseId: ID!
+  title: String
+  description: String
+  type: String
+  created: String
+  modified: String
+  criteria: [RubricCriterion]
+}
+
+"""Extended metadata for a rubric."""
+type RubricDetails {
+  rubricId: ID!
+  courseId: ID!
+  title: String
+  description: String
+  type: String
+  maxPoints: Float
+  criteria: [RubricCriterion]
+  created: String
+  modified: String
+}
+
+"""A single criterion in a rubric."""
+type RubricCriterion {
+  id: ID!
+  rubricId: ID!
+  title: String
+  description: String
+  maxPoints: Float
+  order: Int
+  feedbackEnabled: Boolean
+  levels: [RubricLevel]
+}
+
+"""A performance level in a rubric criterion."""
+type RubricLevel {
+  id: ID!
+  title: String
+  description: String
+  percentage: Float
+  points: Float
+}
+
+"""Association between a rubric and a grade column."""
+type RubricAssociation {
+  rubricId: ID!
+  associationType: String
+  graded: Boolean
+}
+
+"""A grading period grouping grade columns."""
+type GradingPeriod {
+  id: ID!
+  name: String
+  description: String
+  formula: String
+  calculateAutomatically: Boolean
+  dateRanges: [DateRange]
+  filterType: String
+}
+
+"""A date range within a grading period."""
+type DateRange {
+  start: String
+  end: String
+}
+
+# ─── Content Types ────────────────────────────────────────────────────────────
+
+"""A generic content item within a course."""
+type ContentItem {
+  id: ID!
+  parentId: String
+  title: String
+  body: String
+  description: String
+  created: String
+  modified: String
+  position: Int
+  hasChildren: Boolean
+  launchInNewWindow: Boolean
+  reviewable: Boolean
+  availability: ContentAvailability
+  contentHandler: ContentHandler
+  links: [ContentLink]
+  attachments: [Attachment]
+}
+
+"""Availability settings for a content item."""
+type ContentAvailability {
+  available: String
+  allowGuests: Boolean
+  adaptiveRelease: AdaptiveRelease
+}
+
+"""Adaptive release rules for content availability."""
+type AdaptiveRelease {
+  start: String
+  end: String
+}
+
+"""Content handler metadata describing the content type."""
+type ContentHandler {
+  id: String
+  url: String
+  file: ContentHandlerFile
+  gradeColumnId: String
+  groupContent: Boolean
+}
+
+"""File reference in a content handler."""
+type ContentHandlerFile {
+  uploadedFileId: String
+  fileName: String
+  mimeType: String
+}
+
+"""A hyperlink associated with a content item."""
+type ContentLink {
+  href: String
+  rel: String
+  title: String
+  type: String
+}
+
+"""A folder that groups content items."""
+type ContentFolder {
+  id: ID!
+  parentId: String
+  title: String
+  body: String
+  created: String
+  modified: String
+  position: Int
+  hasChildren: Boolean
+  availability: ContentAvailability
+  courseId: ID!
+  children: [ContentItem]
+}
+
+"""A document content item in a course."""
+type Document {
+  id: ID!
+  courseId: ID!
+  parentId: String
+  title: String
+  body: String
+  created: String
+  modified: String
+  availability: ContentAvailability
+  attachments: [Attachment]
+}
+
+"""A file attachment on a content item."""
+type Attachment {
+  id: ID!
+  fileName: String
+  mimeType: String
+  size: Int
+  created: String
+  modified: String
+  uploadedFileId: String
+  linkLabel: String
+}
+
+"""An assignment content item with grade column linkage."""
+type Assignment {
+  id: ID!
+  courseId: ID!
+  parentId: String
+  title: String
+  body: String
+  created: String
+  modified: String
+  availability: ContentAvailability
+  gradeColumnId: String
+  gradeColumn: GradeColumn
+  attemptsAllowed: Int
+  dueDate: String
+  instructions: String
+  fileSizeLimit: Int
+  allowedAttempts: Int
+  submissionFormat: String
+}
+
+"""Metadata for a test or quiz content item."""
+type TestDetails {
+  id: ID!
+  courseId: ID!
+  parentId: String
+  title: String
+  description: String
+  created: String
+  modified: String
+  availability: ContentAvailability
+  gradeColumnId: String
+  dueDate: String
+  timeLimit: Int
+  attemptsAllowed: Int
+  scoringModel: String
+  showAnswers: Boolean
+}
+
+"""An assessment record."""
+type Assessment {
+  id: ID!
+  courseId: ID!
+  title: String
+  description: String
+  created: String
+  modified: String
+  type: String
+  gradeColumnId: String
+  dueDate: String
+  status: String
+}
+
+# ─── Announcement Types ───────────────────────────────────────────────────────
+
+"""A course or system announcement."""
+type Announcement {
+  id: ID!
+  title: String!
+  body: String
+  created: String
+  modified: String
+  showReorder: Boolean
+  showAddAnnouncementButton: Boolean
+  position: Int
+  availability: AnnouncementAvailability
+}
+
+"""Availability settings for an announcement."""
+type AnnouncementAvailability {
+  duration: AnnouncementDuration
+}
+
+"""Duration settings controlling when an announcement is visible."""
+type AnnouncementDuration {
+  type: String
+  start: String
+  end: String
+}
+
+"""A course-scoped announcement with sender metadata."""
+type AnnouncementCourse {
+  id: ID!
+  courseId: ID!
+  title: String!
+  body: String
+  created: String
+  modified: String
+  creator: String
+  availability: AnnouncementAvailability
+}
+
+# ─── Discussion Types ─────────────────────────────────────────────────────────
+
+"""A discussion resource within a course."""
+type Discussion {
+  id: ID!
+  courseId: ID!
+  title: String
+  body: String
+  created: String
+  modified: String
+  forums: [Forum]
+}
+
+"""A discussion forum within a course."""
+type Forum {
+  id: ID!
+  courseId: ID!
+  title: String
+  description: String
+  created: String
+  modified: String
+  position: Int
+  availability: ForumAvailability
+  settings: ForumSettings
+  threads: [Thread]
+}
+
+"""Availability settings for a forum."""
+type ForumAvailability {
+  available: String
+  allowAnonymous: Boolean
+  allowAuthorDelete: Boolean
+  allowAuthorEdit: Boolean
+  allowMembersCreateThread: Boolean
+  allowSubscribe: Boolean
+  allowMembersRatePosts: Boolean
+  allowFileAttachments: Boolean
+}
+
+"""Settings controlling forum behavior."""
+type ForumSettings {
+  allowMembersCreateThread: Boolean
+  allowAnonymous: Boolean
+  mustPostToView: Boolean
+  graded: Boolean
+  gradeColumnId: String
+}
+
+"""A thread within a discussion forum."""
+type Thread {
+  id: ID!
+  forumId: ID!
+  courseId: ID!
+  title: String
+  body: String
+  created: String
+  modified: String
+  position: Int
+  author: String
+  authorId: ID
+  status: String
+  locked: Boolean
+  pinned: Boolean
+  posts: [Post]
+}
+
+"""An individual post in a discussion thread."""
+type Post {
+  id: ID!
+  threadId: ID!
+  forumId: ID!
+  courseId: ID!
+  parentId: String
+  title: String
+  body: String
+  created: String
+  modified: String
+  author: String
+  authorId: ID
+  status: String
+  position: Int
+}
+
+"""Extended metadata for a discussion post."""
+type PostDetails {
+  postId: ID!
+  threadId: ID!
+  forumId: ID!
+  courseId: ID!
+  parentId: String
+  title: String
+  body: String
+  created: String
+  modified: String
+  author: String
+  authorId: ID
+  status: String
+  wordCount: Int
+  attachments: [Attachment]
+  ratings: PostRatings
+}
+
+"""Aggregate rating information for a post."""
+type PostRatings {
+  averageRating: Float
+  ratingCount: Int
+}
+
+# ─── User Types ───────────────────────────────────────────────────────────────
+
+"""A user account in Blackboard Learn."""
+type User {
+  id: ID!
+  uuid: String
+  externalId: String
+  dataSourceId: String
+  userName: String
+  educationLevel: String
+  gender: String
+  birthDate: String
+  created: String
+  modified: String
+  lastLogin: String
+  institutionRoleIds: [String]
+  systemRoleIds: [String]
+  availability: UserAvailability
+  name: UserName
+  contact: UserContactInfo
+  avatar: UserAvatar
+  locale: LocaleSettings
+}
+
+"""Availability status of a user account."""
+type UserAvailability {
+  available: String
+}
+
+"""Name components for a user."""
+type UserName {
+  given: String
+  family: String
+  middle: String
+  other: String
+  suffix: String
+  title: String
+  preferredDisplayName: String
+}
+
+"""Avatar information for a user."""
+type UserAvatar {
+  viewUrl: String
+  source: String
+}
+
+"""Extended details for a user account."""
+type UserDetails {
+  userId: ID!
+  uuid: String
+  externalId: String
+  dataSourceId: String
+  userName: String
+  educationLevel: String
+  gender: String
+  birthDate: String
+  created: String
+  modified: String
+  lastLogin: String
+  systemRoleIds: [String]
+  institutionRoleIds: [String]
+  name: UserName
+  contact: UserContactInfo
+  avatar: UserAvatar
+}
+
+"""Personal information for a user."""
+type UserPersonInfo {
+  userId: ID!
+  birthDate: String
+  gender: String
+  educationLevel: String
+  company: String
+  jobTitle: String
+  department: String
+  street1: String
+  street2: String
+  city: String
+  state: String
+  zipCode: String
+  country: String
+  webPage: String
+}
+
+"""Contact information for a user."""
+type UserContactInfo {
+  email: String
+  webPage: String
+  primaryPhone: String
+  mobilePhone: String
+  businessPhone: String
+  businessFax: String
+}
+
+# ─── Enrollment / Membership Types ───────────────────────────────────────────
+
+"""Detailed enrollment record linking a user to a course."""
+type EnrollmentDetails {
+  courseId: ID!
+  userId: ID!
+  childCourseId: String
+  dataSourceId: String
+  created: String
+  modified: String
+  availability: EnrollmentAvailability
+  courseRoleId: String
+  lastAccessed: String
+}
+
+"""Availability status for an enrollment."""
+type EnrollmentAvailability {
+  available: String
+}
+
+"""A membership record in a course or group context."""
+type Membership {
+  id: ID!
+  userId: ID!
+  courseId: ID
+  groupId: ID
+  roleId: String
+  created: String
+  modified: String
+  availability: MembershipAvailability
+}
+
+"""Availability for a membership record."""
+type MembershipAvailability {
+  available: String
+}
+
+"""An instructor associated with a course."""
+type Instructor {
+  userId: ID!
+  courseId: ID!
+  name: UserName
+  contact: UserContactInfo
+  courseRoleId: String
+  availability: EnrollmentAvailability
+}
+
+"""A student associated with a course."""
+type Student {
+  userId: ID!
+  courseId: ID!
+  name: UserName
+  contact: UserContactInfo
+  courseRoleId: String
+  availability: EnrollmentAvailability
+  lastAccessed: String
+}
+
+# ─── Group Types ──────────────────────────────────────────────────────────────
+
+"""A group within a course."""
+type Group {
+  id: ID!
+  courseId: ID!
+  externalId: String
+  name: String
+  description: String
+  created: String
+  modified: String
+  availability: GroupAvailability
+  enrollment: GroupEnrollment
+  groupSetId: String
+  members: [GroupMembership]
+}
+
+"""Availability settings for a group."""
+type GroupAvailability {
+  available: String
+}
+
+"""Enrollment configuration for a group."""
+type GroupEnrollment {
+  type: String
+  limit: Int
+  signupSheetName: String
+  signupSheetDescription: String
+}
+
+"""Membership record associating a user with a group."""
+type GroupMembership {
+  groupId: ID!
+  userId: ID!
+  courseId: ID!
+  created: String
+  modified: String
+  courseRoleId: String
+}
+
+# ─── Institution & Term ───────────────────────────────────────────────────────
+
+"""Top-level institution record for the Blackboard system."""
+type Institution {
+  id: ID!
+  name: String
+  address: String
+  city: String
+  state: String
+  zipCode: String
+  country: String
+  phone: String
+  webPage: String
+  locale: String
+}
+
+"""An academic term or semester."""
+type Term {
+  id: ID!
+  externalId: String
+  dataSourceId: String
+  name: String
+  description: String
+  availability: TermAvailability
+  courses: [Course]
+}
+
+"""Availability settings for a term."""
+type TermAvailability {
+  available: String
+  duration: TermDuration
+}
+
+"""Duration settings for a term."""
+type TermDuration {
+  type: String
+  start: String
+  end: String
+}
+
+"""An enrollment scoped to a specific term."""
+type TermEnrollment {
+  termId: ID!
+  userId: ID!
+  courseId: ID!
+  courseRoleId: String
+  created: String
+  modified: String
+  availability: EnrollmentAvailability
+}
+
+# ─── Attendance Types ─────────────────────────────────────────────────────────
+
+"""A course meeting or class session."""
+type Meeting {
+  id: ID!
+  courseId: ID!
+  name: String
+  description: String
+  start: String
+  end: String
+  externalLink: String
+  recurrence: MeetingRecurrence
+  attendanceRecords: [AttendanceRecord]
+}
+
+"""Recurrence configuration for a repeating meeting."""
+type MeetingRecurrence {
+  type: String
+  interval: Int
+  daysOfWeek: [String]
+  endDate: String
+}
+
+"""Aggregate attendance information for a course or meeting."""
+type Attendance {
+  courseId: ID!
+  meetingId: ID
+  totalMeetings: Int
+  attended: Int
+  excused: Int
+  absent: Int
+  late: Int
+}
+
+"""An individual attendance record for a user at a meeting."""
+type AttendanceRecord {
+  id: ID!
+  meetingId: ID!
+  courseId: ID!
+  userId: ID!
+  status: String
+  notes: String
+  created: String
+  modified: String
+}
+
+# ─── Calendar Types ───────────────────────────────────────────────────────────
+
+"""A calendar resource associated with a course or institution."""
+type Calendar {
+  id: ID!
+  name: String
+  type: String
+  courseId: ID
+  dynamicCalendarLinkUrl: String
+  staticCalendarLinkUrl: String
+}
+
+"""An event on a calendar."""
+type CalendarEvent {
+  id: ID!
+  type: String
+  calendarId: String
+  calendarName: String
+  title: String
+  description: String
+  location: String
+  start: String
+  end: String
+  disableResizing: Boolean
+  isRecurring: Boolean
+  recurrence: CalendarRecurrence
+  dynamicCalendarLinkUrl: String
+  staticCalendarLinkUrl: String
+}
+
+"""Recurrence rule for a calendar event."""
+type CalendarRecurrence {
+  byday: String
+  count: Int
+  frequency: String
+  interval: Int
+  until: String
+}
+
+# ─── LTI Types ────────────────────────────────────────────────────────────────
+
+"""An LTI tool configuration registered in Blackboard."""
+type LTI {
+  id: ID!
+  name: String
+  description: String
+  launchUrl: String
+  consumerKey: String
+  domain: String
+  type: String
+  allowMembership: Boolean
+  globalNavigation: Boolean
+  placements: [LTIPlacement]
+}
+
+"""A placement of an LTI tool within a course."""
+type LTIPlacement {
+  id: ID!
+  courseId: ID!
+  name: String
+  description: String
+  type: String
+  launchUrl: String
+  handle: String
+  iconUrl: String
+  availability: ContentAvailability
+}
+
+# ─── Webhook Types ────────────────────────────────────────────────────────────
+
+"""A webhook subscription for receiving Blackboard events."""
+type Webhook {
+  id: ID!
+  url: String!
+  description: String
+  status: String
+  authInfo: WebhookAuthInfo
+  eventTypes: [String]
+  expirationDate: String
+  created: String
+  modified: String
+}
+
+"""Authentication configuration for a webhook endpoint."""
+type WebhookAuthInfo {
+  type: String
+  secret: String
+}
+
+"""An event payload delivered by a webhook."""
+type WebhookEvent {
+  id: ID!
+  webhookId: ID!
+  eventType: String
+  payload: String
+  delivered: String
+  status: String
+}
+
+# ─── Auth / Security Types ────────────────────────────────────────────────────
+
+"""OAuth configuration for a Blackboard integration."""
+type OAuth {
+  clientId: ID!
+  clientSecret: String
+  redirectUri: String
+  scopes: [String]
+  description: String
+}
+
+"""An API key credential for accessing Blackboard APIs."""
+type APIKey {
+  id: ID!
+  description: String
+  key: String
+  secret: String
+  status: String
+  created: String
+  modified: String
+  expirationDate: String
+}
+
+"""An OAuth access token."""
+type Token {
+  accessToken: String!
+  tokenType: String
+  expiresIn: Int
+  refreshToken: String
+  scope: String
+}
+
+# ─── Role / Permission Types ──────────────────────────────────────────────────
+
+"""A role definition with associated permissions."""
+type Role {
+  id: ID!
+  name: String
+  description: String
+  roleType: String
+  permissions: [Permission]
+}
+
+"""A permission granted to a role."""
+type Permission {
+  id: ID!
+  name: String
+  description: String
+  entitlementId: String
+}
+
+"""A system-level role assignment for a user."""
+type SystemRole {
+  id: ID!
+  name: String
+  description: String
+  roleType: String
+}
+
+"""A course-level role assignment."""
+type CourseRole {
+  id: ID!
+  courseId: ID!
+  userId: ID!
+  roleId: String
+  roleName: String
+  created: String
+  modified: String
+}
+
+# ─── SIS / Data Source Types ──────────────────────────────────────────────────
+
+"""A SIS data record for integration."""
+type SISData {
+  id: ID!
+  dataSourceId: String
+  externalId: String
+  type: String
+  status: String
+  payload: String
+  created: String
+  modified: String
+}
+
+"""A data source used for SIS integration mappings."""
+type DataSource {
+  id: ID!
+  externalId: String
+  description: String
+}
+
+# ─── Connections / Pagination ─────────────────────────────────────────────────
+
+"""Paginated list of courses."""
+type CourseConnection {
+  results: [Course]
+  paging: PagingInfo
+}
+
+"""Paginated list of users."""
+type UserConnection {
+  results: [User]
+  paging: PagingInfo
+}
+
+"""Paging metadata for a paginated result."""
+type PagingInfo {
+  nextPage: String
+}
+
+# ─── Input Types ──────────────────────────────────────────────────────────────
+
+input CourseFilter {
+  courseId: String
+  name: String
+  externalId: String
+  dataSourceId: String
+  termId: String
+  organization: Boolean
+  modified: String
+  ultraStatus: String
+  allowGuests: Boolean
+  createdCompare: String
+  created: String
+  availabilityAvailable: String
+}
+
+input UserFilter {
+  userName: String
+  externalId: String
+  dataSourceId: String
+  name: String
+  systemRoleId: String
+  availabilityAvailable: String
+  modified: String
+}
+
+input CalendarFilter {
+  calendarId: String
+  type: String
+  since: String
+  until: String
+}
+
+input CourseInput {
+  externalId: String
+  dataSourceId: String
+  courseId: String
+  name: String!
+  description: String
+  termId: String
+  organization: Boolean
+  ultraStatus: String
+  allowGuests: Boolean
+  readOnly: Boolean
+  locale: String
+  availability: CourseAvailabilityInput
+}
+
+input CourseAvailabilityInput {
+  available: String
+}
+
+input EnrollmentInput {
+  courseId: ID!
+  userId: ID!
+  childCourseId: String
+  dataSourceId: String
+  courseRoleId: String
+  availability: EnrollmentAvailabilityInput
+}
+
+input EnrollmentAvailabilityInput {
+  available: String
+}
+
+input GradeColumnInput {
+  externalId: String
+  name: String!
+  description: String
+  externalGrade: Boolean
+  score: GradeColumnScoreInput
+  availability: GradeColumnAvailabilityInput
+  grading: GradeColumnGradingInput
+  includeInCalculations: Boolean
+}
+
+input GradeColumnScoreInput {
+  possible: Float
+}
+
+input GradeColumnAvailabilityInput {
+  available: String
+}
+
+input GradeColumnGradingInput {
+  type: String
+  due: String
+  attemptsAllowed: Int
+  scoringModel: String
+}
+
+input GradeInput {
+  text: String
+  score: Float
+  notes: String
+  feedback: String
+  exempt: Boolean
+}
+
+input AttemptInput {
+  userId: ID!
+  status: String
+  text: String
+  score: Float
+  notes: String
+  feedback: String
+}
+
+input ContentItemInput {
+  parentId: String
+  title: String!
+  body: String
+  position: Int
+  launchInNewWindow: Boolean
+  reviewable: Boolean
+  availability: ContentAvailabilityInput
+  contentHandler: ContentHandlerInput
+}
+
+input ContentAvailabilityInput {
+  available: String
+  allowGuests: Boolean
+}
+
+input ContentHandlerInput {
+  id: String
+  url: String
+  gradeColumnId: String
+}
+
+input ContentFolderInput {
+  parentId: String
+  title: String!
+  body: String
+  position: Int
+  availability: ContentAvailabilityInput
+}
+
+input AnnouncementInput {
+  title: String!
+  body: String
+  availability: AnnouncementAvailabilityInput
+}
+
+input AnnouncementAvailabilityInput {
+  duration: AnnouncementDurationInput
+}
+
+input AnnouncementDurationInput {
+  type: String
+  start: String
+  end: String
+}
+
+input ForumInput {
+  title: String!
+  description: String
+  position: Int
+  availability: ForumAvailabilityInput
+  settings: ForumSettingsInput
+}
+
+input ForumAvailabilityInput {
+  available: String
+  allowAnonymous: Boolean
+  allowAuthorDelete: Boolean
+  allowAuthorEdit: Boolean
+  allowMembersCreateThread: Boolean
+}
+
+input ForumSettingsInput {
+  allowMembersCreateThread: Boolean
+  allowAnonymous: Boolean
+  mustPostToView: Boolean
+  graded: Boolean
+  gradeColumnId: String
+}
+
+input ThreadInput {
+  title: String!
+  body: String
+}
+
+input PostInput {
+  parentId: String
+  title: String
+  body: String!
+}
+
+input GroupInput {
+  externalId: String
+  name: String!
+  description: String
+  availability: GroupAvailabilityInput
+  enrollment: GroupEnrollmentInput
+  groupSetId: String
+}
+
+input GroupAvailabilityInput {
+  available: String
+}
+
+input GroupEnrollmentInput {
+  type: String
+  limit: Int
+  signupSheetName: String
+  signupSheetDescription: String
+}
+
+input MeetingInput {
+  name: String!
+  description: String
+  start: String!
+  end: String!
+  externalLink: String
+}
+
+input AttendanceInput {
+  userId: ID!
+  status: String!
+  notes: String
+}
+
+input CalendarEventInput {
+  type: String
+  calendarId: String
+  title: String!
+  description: String
+  location: String
+  start: String!
+  end: String!
+}
+
+input LTIPlacementInput {
+  name: String!
+  description: String
+  type: String
+  launchUrl: String!
+  handle: String
+  iconUrl: String
+}
+
+input WebhookInput {
+  url: String!
+  description: String
+  eventTypes: [String]!
+  authInfo: WebhookAuthInfoInput
+  expirationDate: String
+}
+
+input WebhookAuthInfoInput {
+  type: String
+  secret: String
+}
+
+input UserInput {
+  externalId: String
+  dataSourceId: String
+  userName: String!
+  educationLevel: String
+  gender: String
+  birthDate: String
+  institutionRoleIds: [String]
+  systemRoleIds: [String]
+  availability: UserAvailabilityInput
+  name: UserNameInput
+  contact: UserContactInfoInput
+}
+
+input UserAvailabilityInput {
+  available: String
+}
+
+input UserNameInput {
+  given: String!
+  family: String!
+  middle: String
+  other: String
+  suffix: String
+  title: String
+  preferredDisplayName: String
+}
+
+input UserContactInfoInput {
+  email: String
+  webPage: String
+  primaryPhone: String
+  mobilePhone: String
+  businessPhone: String
+  businessFax: String
+}
+
+input APIKeyInput {
+  description: String
+  expirationDate: String
+}
