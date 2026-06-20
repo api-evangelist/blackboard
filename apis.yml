@@ -6,7 +6,7 @@ description: Blackboard (now part of Anthology) provides Blackboard Learn LMS pl
   the Anthology product suite (Ally, Student). The Anthology Developer portal exposes
   REST APIs for Learn, Ally, and Student, with versions across the 3200, 3900, and
   4000 series and ongoing backward compatibility.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - EdTech
 - LMS
