@@ -63,6 +63,12 @@ apis:
   - type: Documentation
     url: https://developer.blackboard.com/
 common:
+- type: TrustCenter
+  url: security/blackboard-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/blackboard-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/blackboard-domain-security.yml
 - type: GitHubOrganization
   url: https://github.com/blackboard
 - type: LinkedIn
