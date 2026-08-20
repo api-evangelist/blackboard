@@ -59,6 +59,9 @@ apis:
   humanURL: https://developer.blackboard.com/
   tags:
   - SIS
+  - Students
+  tags_raw:
+  - SIS
   - Student
   properties:
   - type: Documentation
