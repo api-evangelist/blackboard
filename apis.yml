@@ -70,7 +70,7 @@ apis:
   humanURL: https://developer.blackboard.com/
   tags:
   - SIS
-  - Students
+  - Student
   tags_raw:
   - SIS
   - Student
