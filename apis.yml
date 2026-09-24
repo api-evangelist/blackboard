@@ -51,8 +51,6 @@ apis:
   properties:
   - type: Documentation
     url: https://developer.blackboard.com/portal/displayApi
-  - url: graphql/blackboard-graphql.md
-    type: GraphQL
 - aid: blackboard:ally-rest
   name: Anthology Ally REST API
   description: REST API for Anthology Ally, the accessibility and learning effectiveness
