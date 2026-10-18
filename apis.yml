@@ -33,6 +33,9 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/blackboard
 tags:
 - EdTech
 - LMS
+tags_raw:
+- EdTech
+- LMS
 - Learning Management
 created: '2026-05-08'
 modified: '2026-05-08'
